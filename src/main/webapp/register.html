@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .register-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .register-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .register-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .secondary-btn {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .secondary-btn:hover {
+            background-color: #5a6268;
+        }
+
+        
+        .popup {
+            color: red;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .popup.active {
+            display: block;
+        }
+
+        .popup button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #800040;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #0056b3;
+        }
+
+       
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                height: auto;
+                display: block;
+            }
+
+            .register-container {
+                width: 100%;
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+
+            .form-group input,
+            .form-group select {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            .register-btn,
+            .secondary-btn {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .register-container h2 {
+                font-size: 1.5rem;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+            }
+
+            .register-btn,
+            .secondary-btn {
+                font-size: 12px;
+                padding: 7px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Create an Account</h2>
+        <form action="/blogapi/RegisterServlet" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    
+                    <option value="viewer">viewer</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <button type="submit" class="register-btn">Register</button>
+        </form>
+        <button onclick="window.location.href='login.html'" class="secondary-btn">Login</button>
+    </div>
+
+   
+    <div id="errorPopup" class="popup">
+        <p id="errorMessage">Register failed. Please try again.</p>
+        <button onclick="closePopup()">Close</button>
+    </div>
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function showErrorPopup() {
+            const error = getQueryParam('error');
+            if (error) {
+                const popup = document.getElementById('errorPopup');
+                const errorMessage = document.getElementById('errorMessage');
+
+                if (error === 'duplicate') {
+                    errorMessage.textContent = "Details already exists. Please try with new Details.";
+                } else {
+                    errorMessage.textContent = "Register failed. Please try again.";
+                }
+
+                popup.classList.add('active');
+            }
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('errorPopup');
+            popup.classList.remove('active');
+        }
+
+        window.onload = showErrorPopup;
+    </script>
+</body>
+</html>

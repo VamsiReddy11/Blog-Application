@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+       
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            padding: 10px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 16px;
+        }
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+</head>
+<body>
+    <div style="
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin: auto; 
+        max-width: 400px; 
+    "> 
+        <h1>Login</h1>
+        <form action="login" method="POST" style="margin-bottom: 15px;">
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px;">Username:</label>
+                <input type="text" name="username" placeholder="Enter Username" style="
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                " required>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px;">Password:</label>
+                <input type="password" name="password" placeholder="Enter Password" style="
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                " required>
+            </div>
+            <button type="submit" style="
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+            ">Login</button>
+        </form>
+        <button onclick="window.location.href='http://localhost:8080/blogapi/register.html'" style="
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;    
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            width: 100%;
+        ">Register</button>
+
+        <p id="error" style="color: red; display: none; margin-top: 15px;">Invalid username or password</p>
+    </div>
+
+    
+    <div id="toast">Registration successful! Please login.</div>
+
+    <script>
+        // Check for error message in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        const success = urlParams.get('success');
+
+        if (error) {
+            document.getElementById('error').style.display = 'block';
+        }
+
+        if (success === 'true') {
+            const toast = document.getElementById('toast');
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+    </script>
+</body>
+</html>
